@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloWorldController {
 
+    @GetMapping("index")
+    public String index() {
+        return "login success!";
+    }
+
     @GetMapping("hello")
     public String hello() {
         return "Hello, World!";
