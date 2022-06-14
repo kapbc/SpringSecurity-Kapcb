@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                 .formLogin()
                 .loginPage("/login.html")
                 .loginProcessingUrl("/loginSystem")
-                .defaultSuccessUrl("/index")
+                .successForwardUrl("/index")
                 .failureUrl("/login.html")
                 .usernameParameter("username")
                 .passwordParameter("password")
