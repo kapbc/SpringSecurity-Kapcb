@@ -1,6 +1,7 @@
 package com.kapcb.security.helloworld.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -26,7 +27,7 @@ public class HelloWorldController {
         return "Hello, World!";
     }
 
-    @GetMapping("loginFail")
+    @PostMapping("loginFail")
     public String loginFail() {
         return "Sorry, Login Fail";
     }

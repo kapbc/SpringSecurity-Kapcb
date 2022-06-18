@@ -19,6 +19,6 @@ public class RouterController {
 
     @RequestMapping("loginTemplate")
     public String loginTemplate() {
-        return "loginTmeplate";
+        return "loginTemplate";
     }
 }

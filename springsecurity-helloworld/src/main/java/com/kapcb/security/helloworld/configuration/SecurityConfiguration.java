@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                 .loginPage("/router/loginTemplate")
                 .loginProcessingUrl("/loginSystem")
                 .successHandler(customizeSuccessHandler())
-                .failureForwardUrl("/router/loginTemplate")
+                .failureHandler(failureHandler())
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
