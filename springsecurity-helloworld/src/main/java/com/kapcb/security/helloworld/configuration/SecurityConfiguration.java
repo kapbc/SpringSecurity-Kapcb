@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 /**
  * <a>Title: SecurityConfiguration </a>
@@ -25,13 +26,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests()
+                .antMatchers("/loginFail")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login.html")
+                .loginPage("/router/loginTemplate")
                 .loginProcessingUrl("/loginSystem")
                 .successHandler(customizeSuccessHandler())
-                .failureUrl("/login.html")
+                .failureForwardUrl("/router/loginTemplate")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
@@ -48,6 +51,13 @@ public class SecurityConfiguration {
 
     protected CustomizeAuthenticationSuccessHandler customizeSuccessHandler() {
         return new CustomizeAuthenticationSuccessHandler();
+    }
+
+    protected SimpleUrlAuthenticationFailureHandler failureHandler() {
+        SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
+        failureHandler.setDefaultFailureUrl("/loginFail");
+        failureHandler.setUseForward(true);
+        return failureHandler;
     }
 
 }

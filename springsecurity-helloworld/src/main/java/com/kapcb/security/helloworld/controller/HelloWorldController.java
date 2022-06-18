@@ -26,4 +26,9 @@ public class HelloWorldController {
         return "Hello, World!";
     }
 
+    @GetMapping("loginFail")
+    public String loginFail() {
+        return "Sorry, Login Fail";
+    }
+
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>loginTemplate</title>
+</head>
+<body>
+<form action="/loginSystem" method="post">
+    <div th:text="${SPRING_SECURITY_LAST_EXCEPTION}"></div>
+    <label>username: <input type="text" name="username"/></label></br>
+    <label>password: <input type="password" name="password"/></label></br>
+    <input type="submit" name="submit" value="login">
+</form>
+</body>
+</html>
