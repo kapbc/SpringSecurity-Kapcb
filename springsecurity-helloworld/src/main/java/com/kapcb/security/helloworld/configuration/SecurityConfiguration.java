@@ -1,5 +1,6 @@
 package com.kapcb.security.helloworld.configuration;
 
+import com.kapcb.security.helloworld.handler.CustomizeAuthenticationFailureHandler;
 import com.kapcb.security.helloworld.handler.CustomizeAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +35,7 @@ public class SecurityConfiguration {
                 .loginPage("/router/loginTemplate")
                 .loginProcessingUrl("/loginSystem")
                 .successHandler(customizeSuccessHandler())
-                .failureHandler(failureHandler())
+                .failureHandler(customizeFailureHandler())
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
@@ -58,6 +59,10 @@ public class SecurityConfiguration {
         failureHandler.setDefaultFailureUrl("/loginFail");
         failureHandler.setUseForward(true);
         return failureHandler;
+    }
+
+    protected CustomizeAuthenticationFailureHandler customizeFailureHandler() {
+        return new CustomizeAuthenticationFailureHandler();
     }
 
 }
