@@ -1,14 +1,22 @@
 package com.kapcb.security.helloworld.configuration;
 
+import com.alibaba.fastjson.JSON;
 import com.kapcb.security.helloworld.handler.CustomizeAuthenticationFailureHandler;
 import com.kapcb.security.helloworld.handler.CustomizeAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <a>Title: SecurityConfiguration </a>
@@ -39,6 +47,34 @@ public class SecurityConfiguration {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
+                .and()
+                .logout()
+                .logoutRequestMatcher(new OrRequestMatcher(
+                        new AntPathRequestMatcher("/logout1", HttpMethod.GET.name()),
+                        new AntPathRequestMatcher("/logout2", HttpMethod.POST.name())
+                ))
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .defaultLogoutSuccessHandlerFor((request, response, auth) -> {
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    Map<String, Object> resultMap = new HashMap<>(4);
+                    resultMap.put("code", 200);
+                    resultMap.put("msg", "logout1 success!");
+                    resultMap.put("data", null);
+                    String jsonResult = JSON.toJSONString(resultMap);
+                    response.getWriter().write(jsonResult);
+                    response.getWriter().close();
+                }, new AntPathRequestMatcher("/logout1", HttpMethod.GET.name()))
+                .defaultLogoutSuccessHandlerFor((request, response, auth) -> {
+                    response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+                    Map<String, Object> resultMap = new HashMap<>(4);
+                    resultMap.put("code", 200);
+                    resultMap.put("msg", "logout2 success!");
+                    resultMap.put("data", null);
+                    String jsonResult = JSON.toJSONString(resultMap);
+                    response.getWriter().write(jsonResult);
+                    response.getWriter().close();
+                }, new AntPathRequestMatcher("/logout2", HttpMethod.POST.name()))
                 .and()
                 .csrf().disable().build();
     }
