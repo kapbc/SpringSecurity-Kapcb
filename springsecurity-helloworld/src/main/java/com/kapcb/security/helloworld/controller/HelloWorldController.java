@@ -1,5 +1,7 @@
 package com.kapcb.security.helloworld.controller;
 
+import com.kapcb.security.helloworld.component.LoginSuccessComponent;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloWorldController {
 
+    private final LoginSuccessComponent loginSuccessComponent;
+
+    public HelloWorldController(ObjectProvider<LoginSuccessComponent> loginSuccessComponentObjectProvider) {
+        loginSuccessComponent = loginSuccessComponentObjectProvider.stream().findFirst().orElseThrow(RuntimeException::new);
+    }
+
     @GetMapping("index")
     public String index() {
-        return "login success!";
+        return loginSuccessComponent.processSuccess();
     }
 
     @GetMapping("hello")
