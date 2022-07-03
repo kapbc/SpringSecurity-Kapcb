@@ -34,4 +34,24 @@ public class UserController {
         return name;
     }
 
+    @GetMapping("sub-thread-user-info")
+    public void subThreadUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Object credentials = authentication.getCredentials();
+        Object principal = authentication.getPrincipal();
+        System.out.println("name : " + name + "'s credentials is : " + credentials + " principal is : " + principal + " authorities is : " + authorities);
+
+        new Thread(() -> {
+            Authentication subThreadAuthentication = SecurityContextHolder.getContext().getAuthentication();
+            if (subThreadAuthentication == null) {
+                System.out.println("Thread : " + Thread.currentThread().getName() + " get SecurityContext fail!");
+                return;
+            }
+            String subThreadName = subThreadAuthentication.getName();
+            System.out.println("thread : " + Thread.currentThread().getName() + " get user info : " + subThreadName);
+        }, "A").start();
+    }
+
 }
