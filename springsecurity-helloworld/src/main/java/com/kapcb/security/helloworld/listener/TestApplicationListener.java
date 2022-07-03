@@ -21,7 +21,7 @@ public class TestApplicationListener implements ApplicationListener<TestApplicat
     @Override
     public void onApplicationEvent(TestApplicationEvent event) {
         EventBO source = (EventBO) event.getSource();
-        System.out.println("Hello " + source.getName());
+        System.out.println("Hello " + source.getName() + " this is Spring Application Event!");
     }
 
 }

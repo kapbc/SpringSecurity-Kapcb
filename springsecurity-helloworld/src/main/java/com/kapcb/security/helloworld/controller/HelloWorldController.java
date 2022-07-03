@@ -1,8 +1,12 @@
 package com.kapcb.security.helloworld.controller;
 
 import com.kapcb.security.helloworld.component.LoginSuccessComponent;
+import com.kapcb.security.helloworld.context.ApplicationContextHolder;
+import com.kapcb.security.helloworld.event.TestApplicationEvent;
+import com.kapcb.security.helloworld.pojo.bo.EventBO;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +42,11 @@ public class HelloWorldController {
     @PostMapping("loginFail")
     public String loginFail() {
         return "Sorry, Login Fail";
+    }
+
+    @GetMapping("event/{name}")
+    public void event(@PathVariable("name") String name) {
+        ApplicationContextHolder.publishEvent(new TestApplicationEvent(new EventBO(name)));
     }
 
 }
